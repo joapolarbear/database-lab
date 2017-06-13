@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-</head>
-
 <?php
+	include 'header.php';
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
@@ -21,8 +14,9 @@
 	// var_dump($_COOKIE);
 
 	echo "<center>";
+	echo "<body>";
 	echo "<h1>药房管理</h1>";
-	echo "<br><b>亲爱的 $stf_name ，您好</b><br><br>";
+	echo "<h2>亲爱的 $stf_name ，您好</h2>";
 	echo "您本次登录时间为：$datenow <br><br>";
 
 	for($i = 0; $i < count($delete); $i ++)
@@ -32,11 +26,15 @@
 		$rst = mysqli_query($lnk, $s);
 	}
 
-	echo "<br><br><br>删除过期药品成功<br><br><br>";
-	echo "<form action='chemist.php'>";
-	echo "<input type='submit' value='确认'>";
-	echo "</form>";	
+	echo "<div class='middle'>删除过期药品成功</div>";
+
+	echo "<div class='middle'>";
+	echo "<form action='chemist.php?' method='post'>";
+	echo "<input class='btn' type='submit' value='退出'>";
+	echo "</form>";
+	echo "</div>";
+
 	echo "</center>";
-
-
+	echo "</body>";
+	echo "</html>";
 ?>

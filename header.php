@@ -12,7 +12,7 @@
         <div class="navbar">
             <div class="navbar-header">
                 <a class="navbar-brand" href="index.php">
-                    <img src = "2.png" width="10" height="10"><span class="text-logo">医院</span><span class="text-slogan">管理系统</span> 
+                    <span class="text-logo">医院</span><span class="text-slogan">管理系统</span> 
                 </a>
             </div>
         </div>

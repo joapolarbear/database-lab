@@ -1,24 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-</head>
 <?php
+	include 'header.php';	
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
 	//设置客户端和连接字符串
 	mysqli_query($lnk, 'set names utf8');
-//insert into doctor values('0', 'huang', '0', '男', '1996-01-01', '专家', '11122233344', '0')
+
 	$dct_id = $_COOKIE['ck_dct_id'];
 	$dct_name = $_COOKIE['ck_dct_name'];
 	$datenow = date('Y-m-d H:i:s');
 	$option = $_POST['option'];
 
 	echo "<center>";
-	echo "<br><b>尊敬的医生 $dct_name ，您好</b><br><br>";
+	echo "<body>";
+	echo "<h1>医生您好</h1>";
+	echo "<h2>亲爱的医生 $dct_name</h2>";
 	echo "您本次登录时间为：$datenow <br><br>";
 
 	// var_dump($_COOKIE);
@@ -29,7 +25,7 @@
 		$rst = mysqli_query($lnk, $s);
 		$a = mysqli_fetch_assoc($rst);
 		if($a){
-			echo "<table border='1'>";
+			echo "<table>";
 			echo "<tr>";
 			echo "<th>患者编号</th>";
 			echo "<th>患者姓名</th>";
@@ -49,18 +45,19 @@
 					echo "<td style='color:red'>诊疗中</td>";
 				}
 				echo "<form action='diagnosis.php?name={$a['PTT_NO']}&time={$datenow}' method='post'>";
-				echo "<td><input type='submit' value='诊断'></td>";
+				echo "<td><input class='btn' type='submit' value='诊断'></td>";
 				echo "</form>";
 				echo "</tr>";
 
 				$a = mysqli_fetch_assoc($rst);
 			}while($a);
 			echo "</table> ";
-			echo "<br><br><br><br><br><br><br>";
 		}
 		else
 		{
-			echo "暂无患者！";
+			echo "<div class='middle'>";
+			echo "您暂无即将就诊的患者！";
+			echo "</div>";
 		}
 	}
 
@@ -68,7 +65,7 @@
 	{
 		$s = "select * from diagnosis, patient where diagnosis.PTT_NO = patient.PTT_NO and  DCT_NO = '{$dct_id}'";
 		$rst = mysqli_query($lnk, $s);
-		echo "<table border='1'>";
+		echo "<table>";
 		echo "<tr>";
 		echo "<th>诊疗时间</th>";
 		echo "<th>患者姓名</th>";
@@ -84,15 +81,16 @@
 			echo "</tr>";
 		}
 		echo "</table> ";
-		echo "<br><br><br><br><br><br><br>";
 	}
 
-	echo "<br><br>";
+	echo "<div class='middle'>";
 	echo "<form action='doctor.php?' method='post'>";
-	echo "<input type='submit' value='返回'>";
+	echo "<input class='btn' type='submit' value='退出'>";
 	echo "</form>";
+	echo "</div>";
+
 	echo "</center>";
-	echo "<br><br>";
-	echo "</center>";
+	echo "</body>";
+	echo "</html>";
 
 ?>

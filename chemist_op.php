@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-</head>
-
 <?php
+	include 'header.php';
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
@@ -21,43 +14,51 @@
 	// var_dump($_COOKIE);
 
 	echo "<center>";
+	echo "<body>";
 	echo "<h1>药房管理</h1>";
-	echo "<br><b>亲爱的 $stf_name ，您好</b><br><br>";
+	echo "<h2>亲爱的 $stf_name ，您好</h2>";
 	echo "您本次登录时间为：$datenow <br><br>";
 
 	if($option=='入药')
 	{
-		echo "请输入药品信息<br><br>";
+		echo "<div class='middle'>";
+		echo "<div class='row2'>请输入药品信息</div>";
 		echo "<form action='drug_in.php?time=$datenow' method='post'>";
 
-		echo "药品名:<input type='text' name='name'> <br><br>";
-		echo "生产时间:<input type='date' name='pro_time'> <br><br>";
-		echo "失效时间:<input type='date' name='exp_time'> <br><br>";
-		echo "进价:<input type='number' name='inprice'> <br><br>";
-		echo "售价:<input type='number' name='price'> <br><br>";
-		echo "数量:<input type='number' name='amount'> <br><br>";
+		echo "<div class='row'>药品名:<input type='text' name='name'></div>";
+		echo "<div class='row'>生产时间:<input type='date' name='pro_time'></div>";
+		echo "<div class='row'>失效时间:<input type='date' name='exp_time'></div>";
+		echo "<div class='row'>进价:<input type='number' name='inprice'></div>";
+		echo "<div class='row'>售价:<input type='number' name='price'></div>";
+		echo "<div class='row'>数量:<input type='number' name='amount'></div>";
 
-		echo "<input type='submit' value='保存'>";
+		echo "<div class='row2'><input class='btn' type='submit' value='保存'></div>";
 		echo "</form>";
+		echo "</div>";
 	}
 
 	if($option=='出药')
 	{
-		echo "请输入患者身份证号和姓名<br><br>";
+		echo "<div class='middle'>";
+		echo "<div class='row2'>请输入患者身份证号和姓名</div>";
 		echo "<form action='drug_out.php?time=$datenow' method='post'>";
 
-		echo "患者身份证号:<input type='text' name='ptt_id'> <br><br>";
-		echo "患者姓名:<input type='text' name='ptt_name'> <br><br>";
+		echo "<div class='row'>身份证号:<input type='text' name='ptt_id'></div>";
+		echo "<div class='row'>患者姓名:<input type='text' name='ptt_name'></div>";
 
-		echo "<input type='submit' value='确认'>";
+		echo "<div class='row2'><input class='btn' type='submit' value='确认'></div>";
 		echo "</form>";		
+		echo "</div>";
 	}
 
 	if($option=='查看药品')
 	{
 		$s = "select * from drug order by DRUG_NAME";
 		$rst = mysqli_query($lnk, $s);
-		echo "<table border='1'>";
+		echo "<table>";
+		echo "<tr>";
+		echo "<th colspan='8'>药品信息</th>";
+		echo "</tr>";
 		echo "<tr>";
 		echo "<th>药品编号</th>";
 		echo "<th>药品名称</th>";
@@ -81,10 +82,6 @@
 			echo "</tr>";
 		}
 		echo "</table> ";
-		echo "<br><br><br><br>";
-		echo "<form action='chemist.php'>";
-		echo "<input type='submit' value='确认'>";
-		echo "</form>";	
 	}
 
 	if($option == '更新药品')
@@ -96,14 +93,17 @@
 		if($a)
 		{
 			echo "<form action='drug_delete.php?time=$datenow' method='post'>";
-			echo "<table border = '2'>";
+			echo "<table>";
+			echo "<tr>";
+			echo "<th colspan='5'>一个月内即将失效药品</th>";
+			echo "</tr>";
 			echo "<tr>";
 			echo "<th>药品编号</th>";
 			echo "<th>药品名称</th>";
 			echo "<th>药品价格</th>";
 			echo "<th>药品库存</th>";
-
 			echo "<th>删除</th>";
+			echo "</tr>";
 			do{
 				echo "<tr>";
 				echo "<td>{$a['DRUG_NO']}</td>";
@@ -116,24 +116,28 @@
 
 				$a = mysqli_fetch_assoc($rst);
 			}while($a);
-			echo "<input type='submit' name='option' value='确认'>";
-			echo "<br><br>";
+			echo "</table>";
+			echo "<div class='middle'>";
+			echo "<input class='btn' type='submit' name='option' value='确认'>";
+			echo "</div>";
 			echo "</form>";
 		}
 		else
 		{
+			echo "<div class='middle'>";
 			echo "近期没有即将失效的药品";
-			echo "<br><br>";
-			echo "<form action='chemist.php'>";
-			echo "<input type='submit' value='确认'>";
-			echo "</form>";
+			echo "</div>";
 		}
 	}
 
-	if($option == '退出登录')
-	{
-		//应该有对cookie的删除操作  huhanpeng
-		header("Location: http://127.0.0.1:8000/index.php");
-	}
+	echo "<div class='middle'>";
+	echo "<form action='chemist.php?' method='post'>";
+	echo "<input class='btn' type='submit' value='退出'>";
+	echo "</form>";
+	echo "</div>";
+
+	echo "</center>";
+	echo "</body>";
+	echo "</html>";
 
 ?>

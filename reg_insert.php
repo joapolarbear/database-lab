@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-</head>
-
 <?php
+	include 'header.php';
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
@@ -19,17 +12,19 @@
 	$dct_id = $_GET['name'];
 	$datenow=date('Y-m-d H:i:s');
 
-	// var_dump($_COOKIE);
-
 	echo "<center>";
-	echo "<br><b>尊敬的 $stf_name ，您好</b><br><br>";
-	echo "您本次登录时间为：$datenow <br><br>";
+	echo "<body>";
+
+	echo "<h1>收费处</h1>";
+	echo "<h2>亲爱的 $stf_name ，您好</h2>";
+	echo "您本次登录时间为：$datenow <br>";
 
 	$s = "select * from doctor where DCT_NO ='{$dct_id}' and DCT_ON = 1";
 	// echo $s;
 	$rst = mysqli_query($lnk, $s);
 	$array = mysqli_fetch_assoc($rst);
 
+	echo "<div class='middle'>";
 	if($array == null)
 	{
 		echo "这个医生不存在！挂号失败";
@@ -54,6 +49,15 @@
 		echo "<br><br>";
 		echo "科室：{$array2['DEPT_NAME']}";
 	}
+	echo "</div>";
 
+	echo "<div class='middle'>";
+	echo "<form action='clerk.php?' method='post'>";
+	echo "<input class='btn' type='submit' value='返回'>";
+	echo "</form>";
+	echo "</div>";
 
+	echo "</center>";
+	echo "</body>";
+	echo "</html>";
 ?>

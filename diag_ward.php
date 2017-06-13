@@ -1,18 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-	<style type="text/css">
-		.leftdiv{
-			width: 300px;
-			//float: left;
-			text-align: left;
-		}
-	</style>
-</head>
 <?php
+	include 'header.php';
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
@@ -36,10 +23,11 @@
 	$a = mysqli_fetch_assoc($rst);
 
 	echo "<center>";
-	echo "<br><b>尊敬的 $dct_name 医生, 您好</b><br><br>";
-	echo "您本次登录时间为：$datenow <br><br>";
-	echo "<br><b>您正在诊断患者 {$a['PTT_NAME']}</b><br><br>";
-	echo "<br><br>";
+	echo "<body>";
+	echo "<h1>医生您好</h1>";
+	echo "<h2>亲爱的医生 $dct_name</h2>";
+	echo "<h2>您是否为患者 {$a['PTT_NAME']} 开住院单</h2>";
+	echo "您本次登录时间为：$datenow <br>";
 
 	if($option == '确认')
 	{
@@ -50,25 +38,34 @@
 		$rst = mysqli_query($lnk, $s);
 
 		$s = "update diagnosis set DL_NO = '{$id}' where DIAG_NO = '{$diag}'";
+		// echo $s;
+		// var_dump($drug);
+		// var_dump($amount);
+		// var_dump($usage);
 		$rst = mysqli_query($lnk, $s);
+		$j = 0;
 		for($i = 0; $i < count($drug); $i = $i + 1)
 		{
-			$s = "insert into listdrug values('{$id}', '{$drug[$i]}', '{$usage	[$i]}', {$amount[$i]})";
+			for(; $j < count($drug) && $amount[$i] == ''; $j++);
+			$s = "insert into listdrug values('{$id}', '{$drug[$i]}', '{$usage[$j]}', {$amount[$j]})";
 			$rst = mysqli_query($lnk, $s);
+			$j++;
 		}
 	}
 	
+	echo "<div class='middle'>";
 	echo "<form action='diag_final.php?name1=$ptt_id&diag=$diag&time={$datenow}' method='post'>";
-	echo "<div class = 'leftdiv'>";
-	echo "楼栋：<input type='number' name='build'><br><br>";
-	echo "楼层：<input type='number' name='floor'><br><br>";
-	echo "房间：<input type='number' name='room'><br><br>";
-	echo "床号：<input type='number' name='bed'><br><br>";
+	echo "<div class='row'>楼栋：<input type='number' name='build'></div>";
+	echo "<div class='row'>楼层：<input type='number' name='floor'></div>";
+	echo "<div class='row'>房间：<input type='number' name='room'></div>";
+	echo "<div class='row'>床号：<input type='number' name='bed'></div>";
+	
+	echo "<div class='row2'>";
+	echo "<span class='row'><input class='btn' type='submit' name='option' value='确认'></span>";
+	echo "<span class='row'><input class='btn' type='submit' name='option' value='跳过'></span>";
 	echo "</div>";
-	echo "<input type='submit' name='option' value='确认'>";
-	echo "<input type='submit' name='option' value='跳过'>";
 	echo "</form>";
-	echo "<br><br><b>医院病床信息</b><br><br>";
+	echo "</div>";
 
 	//床位信息
 	$s = "select * from ward where WD_STATE = 0 order by WD_BLD, WD_FLOOR, WD_ROOM, WD_BED";
@@ -76,13 +73,17 @@
 	$a = mysqli_fetch_assoc($rst);
 	if($a)
 	{
-		echo "<table border = '1'>";
+		echo "<table>";
+		echo "<tr>";
+		echo "<th colspan='5'>医院病床信息</th>";
+		echo "</tr>";
 		echo "<tr>";
 		echo "<th>编号</th>";
 		echo "<th>楼栋</th>";
 		echo "<th>楼层</th>";
 		echo "<th>房间</th>";
 		echo "<th>床号</th>";
+		echo "</tr>";
 		do{
 			echo "<tr>";
 			echo "<td>{$a['WD_NO']}</td>";
@@ -93,9 +94,20 @@
 			echo "</tr>";
 			$a = mysqli_fetch_assoc($rst);
 		}while($a);
+		echo "</table>";
 	}
 	else{
+		echo "<div class='middle'>";
 		echo "没有空闲病床";
+		echo "</div>";
 	}
+	echo "<div class='middle'>";
+	echo "<form action='diagnosis.php?' method='post'>";
+	echo "<input class='btn' type='submit' value='退出'>";
+	echo "</form>";
+	echo "</div>";
 
+	echo "</center>";
+	echo "</body>";
+	echo "</html>";
 ?>

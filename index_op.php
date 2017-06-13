@@ -169,7 +169,7 @@
 				<div class='row'>密码:<input type='password' name='new_password'> </div>
 				<div class='row'>确认密码:<input type='password' name='new_passeord1'> </div>
 				<div class='row'>姓名:<input type='text' name='new_name'></div>
-				<div class='row'>性别：<input type='radio' name='new_sex' value='男'>男
+				<div class='row2'>性别：<input type='radio' name='new_sex' value='男'>男
 				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='radio' name='new_sex' value='女'>女</div>
 				<div class='row'>联系方式:<input type='text' name='new_tel'> </div>
 				<div class='row'>家庭住址:<input type='text' name='new_addr'> </div>

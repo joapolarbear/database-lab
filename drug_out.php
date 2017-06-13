@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-</head>
-
 <?php
+	include 'header.php';
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
@@ -18,14 +11,13 @@
 	$datenow=isset($_GET['time']) ? $_GET['time'] : date('Y-m-d H:i:s');
 	$option = isset($_POST['option']) ? $_POST['option'] : '';
 
-	var_dump($_COOKIE);
-
 	$ptt_id = isset($_POST['ptt_id']) ? $_POST['ptt_id'] : '';
 	$ptt_name = isset($_POST['ptt_name']) ? $_POST['ptt_name'] : '';
 
 	echo "<center>";
+	echo "<body>";
 	echo "<h1>药房管理</h1>";
-	echo "<br><b>亲爱的 $stf_name ，您好</b><br><br>";
+	echo "<h2>亲爱的 $stf_name ，您好</h2>";
 	echo "您本次登录时间为：$datenow <br><br>";
 
 	$id = strtr($datenow, array(' '=>''));
@@ -43,7 +35,10 @@
 		$a = mysqli_fetch_assoc($rst);
 		if($a)
 		{
-			echo "<table border='1'>";
+			echo "<table>";
+			echo "<tr>";
+			echo "<th colspan='3'>出药信息</th>";
+			echo "</tr>";
 			echo "<tr>";
 			echo "<th>药品名称</th>";
 			echo "<th>药品数量</th>";
@@ -63,19 +58,32 @@
 				$remain = $a['DRUG_STORE'] - $a['DRUG_AMOUNT'];
 				if($remain >= 0)
 				{		
-					$s = "update drug set DRUG_STORE = {$remain} where DL_NO = '{$drug_no}'";
-					$rst = mysqli_query($lnk, $s);
+					$s2 = "update drug set DRUG_STORE = {$remain} where DRUG_NO = '{$drug_no}'";		
+					$rst2 = mysqli_query($lnk, $s2);
 				}
 				else echo "药品 {$name} 数量不足，请补充";
 
 				$a = mysqli_fetch_assoc($rst);	
 			}while($a);
+			echo "<table>";
 		}
 
 		$s = "update druglist set DL_STATE = 2, STF_NO = '{$stf_id}' where DL_NO = '{$list_no}'";
 		$rst = mysqli_query($lnk, $s);
 	}
 	else{
-		echo "用户 {$ptt_id} 不能领药，请先开药或缴费";
+		echo "<div class='middle'>";
+		echo "患者 {$ptt_id} 不能领药，请先开药或缴费";
+		echo "</div>";
 	}
+
+	echo "<div class='middle'>";
+	echo "<form action='chemist.php?' method='post'>";
+	echo "<input class='btn' type='submit' value='退出'>";
+	echo "</form>";
+	echo "</div>";
+
+	echo "</center>";
+	echo "</body>";
+	echo "</html>";
 ?>

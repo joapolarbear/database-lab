@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-</head>
-
 <?php
+	include 'header.php';
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
@@ -18,24 +11,37 @@
 	$datenow=date('Y-m-d H:i:s');
 
 	echo "<center>";
-	echo "<br><b>尊敬的 $stf_name ，您好</b><br><br>";
-	echo "您本次登录时间为：$datenow <br><br>";
+	echo "<body>";
 
-	echo "<div id='container' style='width:600px'>";
+	echo "<h1>收费处</h1>";
+	echo "<h2>亲爱的 $stf_name ，您好</h2>";
+	echo "您本次登录时间为：$datenow <br>";
+
+	echo "<div class='middle'>";
 
 	echo "<form action='reg_check.php' method='post'>";
 	echo "
-		<br><br><br><b>患者身份验证</b><br><br><br>
-		身份证号:<input type='text' name='ptt_id'> <br><br>
-		姓&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp名:<input type='text' name='ptt_name'> <br><br>
+		<div class='row2'><b>患者身份验证</b></div>
+		<div class='row'>身份证号:<input type='text' name='ptt_id'></div>
+		<div class='row'>姓名:<input type='text' name='ptt_name'></div>
 		";
 
-	echo "<input style = 'background-color:White; color: Black;', type='submit' name ='option' value='已预约'><br><br>";
-	echo "<input style = 'background-color:White; color: Black;', type='submit' name ='option' value='未预约'><br><br>";
+	echo "<div class='row2'>";
+	echo "<span class='row'><input class='btn', type='submit' name ='option' value='已预约'></span>";
+	echo "<span class='row'><input class='btn', type='submit' name ='option' value='未预约'></span>";
+	echo "</div>";
 
 	echo "</form>";
 	echo "</div>";
+	echo "</div>";
+
+	echo "<div class='middle'>";
+	echo "<form action='clerk.php?' method='post'>";
+	echo "<input class='btn' type='submit' value='返回'>";
+	echo "</form>";
+	echo "</div>";
+
 	echo "</center>";
-
-
+	echo "</body>";
+	echo "</html>";
 ?>

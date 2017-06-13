@@ -1,17 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-</head>
 <?php
+	include 'header.php';
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
 	//设置客户端和连接字符串
 	mysqli_query($lnk, 'set names utf8');
-//insert into doctor values('0', 'huang', '0', '男', '1996-01-01', '专家', '11122233344', '0')
+
 	$dct_id = $_COOKIE['ck_dct_id'];
 	$dct_name = $_COOKIE['ck_dct_name'];
 	$datenow = $_GET['time'];
@@ -25,32 +19,40 @@
 	$a = mysqli_fetch_assoc($rst);
 
 	echo "<center>";
-	echo "<br><b>尊敬的 $dct_name 医生，您好</b><br><br>";
+	echo "<body>";
+	echo "<h1>医生您好</h1>";
+	echo "<h2>亲爱的医生 $dct_name</h2>";
 	echo "您本次登录时间为：$datenow <br><br>";
-	echo "<br><b>您正在诊断患者 {$a['PTT_NAME']}</b><br><br>";
 
 	//设置诊疗进行中
 	$s = "update appointment set APT_STATE = 2 where PTT_NO = {$ptt_id} and DCT_NO = {$dct_id} and APT_STATE = 1";
 	$rst = mysqli_query($lnk, $s);
 
-	echo "<div id='container' style='width:600px'>";
+	echo "<div class='middle'>";
 
-	echo "<div id='content1' style='height:320px;width:300px;float:left;'>";
 	echo "<form action='diag_op.php?name1={$ptt_id}&time={$datenow}' method='post'>";
-	echo "<input style = 'background-color:White; color: Black;', type='submit' name ='option' value='患者信息'><br><br>";
-	echo "<input type='submit' name ='option' value='患者病历'><br><br>";
-	echo "</div>";
-
-	echo "<div id='content2' style='height:320px;width:300px;float:left;'>";
-	echo "<input type='submit' name ='option' value='诊断'><br><br>";
-	echo "<input type='submit' name ='option' value='结束诊断'><br><br>";
+	echo "<div class='row2'><input class='btn', type='submit' name ='option' value='患者信息'></div>";
+	echo "<div class='row2'><input class='btn' type='submit' name ='option' value='患者病历'></div>";
+	echo "<div class='row2'><input class='btn' type='submit' name ='option' value='诊断'></div>";
+	echo "<div class='row2'><input class='btn' type='submit' name ='option' value='结束诊断'></div>";
 	echo "</form>";
-	echo "</div>";
 
+	echo "</div>";
+	//最后一步医生按取消，回到该界面
 	if($option == '取消')
 	{
 		$s = "delete from diagnosis where DIAG_NO = {'$diag'}";
 		$rst = mysqli_query($lnk, $s);
 	}
+
+	echo "<div class='middle'>";
+	echo "<form action='doctor.php?' method='post'>";
+	echo "<input class='btn' type='submit' value='退出'>";
+	echo "</form>";
+	echo "</div>";
+
+	echo "</center>";
+	echo "</body>";
+	echo "</html>";
 
 ?>

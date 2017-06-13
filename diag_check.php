@@ -1,18 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-	<style type="text/css">
-		.leftdiv{
-			width: 300px;
-			//float: left;
-			text-align: left;
-		}
-	</style>
-</head>
 <?php
+	include 'header.php';
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
@@ -31,22 +18,39 @@
 	$a = mysqli_fetch_assoc($rst);
 
 	echo "<center>";
-	echo "<br><b>尊敬的 $dct_name 医生, 您好</b><br><br>";
-	echo "您本次登录时间为：$datenow <br><br>";
-	echo "<br><b>您正在诊断患者 {$a['PTT_NAME']}</b><br><br>";
-	echo "<br><br>";
+	echo "<body>";
+	echo "<h1>医生您好</h1>";
+	echo "<h2>亲爱的医生 $dct_name</h2>";
+	echo "<h2>您正在诊断患者 {$a['PTT_NAME']}</h2>";
+	echo "您本次登录时间为：$datenow <br>";
 	//插入诊断表新行
 	$id = strtr($datenow, array(' '=>''));
 	$id = "{$id}{$dct_id}";
 	$s = "insert into diagnosis values('{$id}', '{$datenow}', '{$what}', '{$desc}', NULL, NULL, NULL, '{$dct_id}', '{$ptt_id}')";
 	$rst = mysqli_query($lnk, $s);
 
+	echo "<div class='middle'>";
 	echo "<form action='diag_drug.php?name1=$ptt_id&diag=$id&time={$datenow}' method='post'>";
-	echo "<div class = 'leftdiv'>";
-	echo "检查项目：<input type='text' name='program'><br><br>";
-	echo "检查科室：<input type='text' name='dept'><br><br>";
+	echo "<div class='row'>检查项目：<input type='text' name='program'></div>";
+	echo "<div class='row'>检查科室：<input type='text' name='dept'></div>";
+	
+	echo "<div class='row2'>";
+	echo "<span class='row'><input class='btn' type='submit' name='option' value='确认'></span>";
+	echo "<span class='row'><input class='btn' type='submit' name='option' value='跳过'></span>";
 	echo "</div>";
-	echo "<input type='submit' name='option' value='确认'>";
-	echo "<input type='submit' name='option' value='跳过'>";
+
 	echo "</form>";
+	echo "</div>";
+
+	echo "<div class='middle'>";
+	echo "<form action='diagnosis.php?' method='post'>";
+	echo "<input class='btn' type='submit' value='退出'>";
+	echo "</form>";
+	echo "</div>";
+
+	echo "</center>";
+	echo "</body>";
+	echo "</html>";
+
+
 ?>

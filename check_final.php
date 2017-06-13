@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-</head>
-
 <?php
+	include 'header.php';
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
@@ -27,31 +20,37 @@
 	$dept = $a['DEPT_NAME'];
 
 	echo "<center>";
+	echo "<body>";
 	echo "<h1>{$dept} 检查</h1>";
-	echo "<br><b>亲爱的 $dct_name 医生，您好</b><br><br>";
+	echo "<h2>亲爱的 $dct_name 医生，您好</h2>";
 	echo "您本次登录时间为：$datenow <br><br>";
+
 	//查询该患者未处理的检查单，对应相应的科室部门
 	$s = "select * from diagnosis, checklist where diagnosis.CL_NO = checklist.CL_NO and CL_STATE = 1 and PTT_NO = '{$ptt_id}' and DEPT_NAME = '{$dept}'";
 	$rst = mysqli_query($lnk, $s);
 	$a = mysqli_fetch_assoc($rst);
+
+	echo "<div class='middle'>";
 	if($a)
 	{
 		$cl_id = $a['CL_NO'];
-		echo "患者 {$ptt_id} 检查成功<br><br>";
+		echo "患者 {$ptt_id} 检查成功";
 
 		$s = "update checklist set CL_STATE = 2, RESULT = '{$ptt_rst}' ,CL_DCT = '{$dct_id}' where 	CL_NO = '{$cl_id}'";
 		$rst = mysqli_query($lnk, $s);
 	}
 	else 
 	{
-		echo "患者 {$ptt_id} 不能检查 {$dept} 项目，请先开检查单或缴费或往相应部门检查<br><br>";
+		echo "患者 {$ptt_id} 不能检查 {$dept} 项目，请先开检查单或缴费或往相应部门检查";
 	}
-
-	echo "<br><br>";
-	echo "<form action='check.php?time=$datenow' method='post'>";
-	echo "<input type='submit' value='确认'>";
+	echo "</div>";
+	echo "<div class='middle'>";
+	echo "<form action='check.php?' method='post'>";
+	echo "<input class='btn' type='submit' value='确认'>";
 	echo "</form>";
+	echo "</div>";
+
 	echo "</center>";
-	echo "<br><br>";
-	echo "</center>";
+	echo "</body>";
+	echo "</html>";
 ?>

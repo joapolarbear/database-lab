@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-</head>
-
 <?php
+	include 'header.php';
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
@@ -23,33 +16,35 @@
 	$dept = $a['DEPT_NAME'];
 
 	echo "<center>";
+	echo "<body>";
 	echo "<h1>{$dept} 检查</h1>";
-	echo "<br><b>亲爱的 $dct_name 医生，您好</b><br><br>";
+	echo "<h2>亲爱的 $dct_name 医生，您好</h2>";
 	echo "您本次登录时间为：$datenow <br><br>";
 
-	echo "<div id='container' style='width:600px'>";
+	echo "<div class='middle'>";
 
 	echo "<form action='check_final.php?time=$datenow' method='post'>";
 	echo "
-		<br><br><br><b>患者身份验证</b><br><br><br>
-		身份证号: <input type='text' name='ptt_id'> <br><br>
-		姓名: <input type='text' name='ptt_name'> <br><br>
-		检查结果: <input type='text' name='ptt_rst'> <br><br>
+		<div class='row2'><b>患者身份验证</b></div>
+		<div class='row'>身份证号: <input type='text' name='ptt_id'></div>
+		<div class='row'>姓名: <input type='text' name='ptt_name'></div>
+		<div class='row'>检查结果: <input type='textarea' style='height:100px ' name='ptt_rst'></div>
 		";
 
-	echo "<input style = 'background-color:White; color: Black;', type='submit' name ='option' value='确认'><br><br>";
+	echo "<div class='row2'><input class='btn' type='submit' name ='option' value='确认'></div>";
 
 	echo "</form>";
 	echo "</div>";
 
-	echo "<br><br>";
+	echo "<div class='middle'>";
 	echo "<form action='index.php?' method='post'>";
-	echo "<input type='submit' value='退出登录'>";
+	echo "<input class='btn' type='submit' value='退出'>";
 	echo "</form>";
-	echo "</center>";
-	echo "<br><br>";
+	echo "</div>";
 
 	echo "</center>";
+	echo "</body>";
+	echo "</html>";
 
 
 ?>

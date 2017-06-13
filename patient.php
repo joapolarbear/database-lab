@@ -42,6 +42,4 @@
 	echo "</center>";
 	echo "</body>";
 	echo "</html>";
-
-
 ?>

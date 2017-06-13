@@ -21,9 +21,9 @@
 	// var_dump($_COOKIE);
 	if($option == '预约')
 	{
-		$s = "select * from doctor";
+		$s = "select * from doctor where DCT_TITLE <> '检查医师' and DCT_TITLE <> '护士'";
 		$rst = mysqli_query($lnk, $s);
-		echo "<table border='1'>";
+		echo "<table>";
 		echo "<tr>";
 		echo "<th>医生编号</th>";
 		echo "<th>医生姓名</th>";
@@ -98,6 +98,7 @@
 
 				$array = mysqli_fetch_assoc($rst);
 			}while($array);
+			echo "<table>";
 		}
 		else{
 			echo "<div class='middle'>您还没有预约信息！</div>";
@@ -115,9 +116,11 @@
 		echo "<div class='row'>姓名:<input type='text' name='ptt_name'></div>";
 		echo "<div class='row'>密码:<input type='password' name='ptt_psw'></div>";
 		echo "<div class='row'>确认密码:<input type='password' name='ptt_psw1'></div>";
-		echo "<div class='row'>性别：
-				<input type='radio' name='ptt_sex' value='男'>男
-				<input type='radio' name='new_sex' value='女'>女</div>";
+		echo "<div class='row2'>
+				<span class='row'>性别：</span>
+				<span class='row'><input type='radio' name='ptt_sex' value='男'>男</span>
+				<span class='row'><input type='radio' name='new_sex' value='女'>女</span>";
+		echo "</div>";
 		echo "<div class='row'>联系方式:<input type='text' name='ptt_tel'></div>";
 		echo "<div class='row'>家庭住址:<input type='text' name='ptt_addr'></div>";
 		echo "<div class='row'>出生日期:<input type='date' name='ptt_birth'></div>";

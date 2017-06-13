@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>医院管理系统</title>
-	<link rel="shortcut icon" type="image/x-icon" href="myapp.ico" />
-</head>
-
 <?php
+	include 'header.php';
 	header("content-type:text/html;charset=utf-8");
 	//通过PHP连接服务器,选择数据库
 	$lnk = mysqli_connect('localhost', 'root', '', 'hospital');
@@ -26,28 +19,32 @@
 	$a = mysqli_fetch_assoc($rst);
 
 	echo "<center>";
-	echo "<br><b>尊敬的 $stf_name ，您好</b><br><br>";
-	echo "您本次登录时间为：$datenow <br><br>";
+	echo "<body>";
+
+	echo "<h1>收费处</h1>";
+	echo "<h2>亲爱的 $stf_name ，您好</h2>";
+	echo "您本次登录时间为：$datenow <br>";
 
 	if($a == null)
 	{
 		echo "
-		<body bgcolor='LightCyan'>
-		<center><br><br><br><b>!!!患者还未注册，请先注册患者信息!!!</b><br><br><br>
+		<div class='middle'>
+			<div class='row2'><b>!!!患者还未注册，请先注册患者信息!!!</b></div>
 			<form action='register.php' method='post'>
-				身份证号:<input type='text' name='new_id'> <br><br>
-				密&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp码:<input type='password' name='new_password' value = '1'> <br><br>
-				确认密码:<input type='password' name='new_passeord1' value = '1'> <br><br>
-				姓&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp名:<input type='text' name='new_name'> <br><br>
-				性&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp别：
-				&nbsp&nbsp&nbsp&nbsp<input type='radio' name='new_sex' value='男'>男
-				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='radio' name='new_sex' value='女'>女&nbsp&nbsp&nbsp<br><br>
-				联系方式:<input type='text' name='new_tel'> <br><br>
-				家庭住址:<input type='text' name='new_addr'> <br><br>
-				出生日期:<input type='date' name='new_birth'> <br><br>
-				<input type='submit' value='注册'>
+				<div class='row'>身份证号:<input type='text' name='new_id'></div>
+				<div class='row'>密码:<input type='password' name='new_password' value = '1'></div>
+				<div class='row'>确认密码:<input type='password' name='new_passeord1' value = '1'></div>
+				<div class='row'>姓名:<input type='text' name='new_name'></div>
+				<div class='row2'>性别：
+				<input type='radio' name='new_sex' value='男'>男
+				<input type='radio' name='new_sex' value='女'>女</div>
+				<div class='row'>联系方式:<input type='text' name='new_tel'></div>
+				<div class='row'>家庭住址:<input type='text' name='new_addr'></div>
+				<div class='row'>出生日期:<input type='date' name='new_birth'></div>
+				<div class='row2'><input class='btn' type='submit' value='注册'></div>
 			</form>
-		</center>";
+		</div>
+		";
 	}
 	else{
 		if($option == '已预约')
@@ -55,6 +52,8 @@
 			$s = "select * from appointment where PTT_NO = {$ptt_id} and APT_STATE = 0";
 			$rst = mysqli_query($lnk, $s);
 			$array = mysqli_fetch_assoc($rst);
+
+			echo "<div class='middle'>";
 			if($array)
 			{
 				//暂时默认同时只能预约一位医生 hu hanpeng 
@@ -74,12 +73,13 @@
 			else{
 				echo "患者 {$a['PTT_NAME']} 未预约";
 			}
+			echo "</div>";
 		}
 		else if($option == '未预约')
 		{
-			$s = "select * from doctor order by DEPT_NAME";
+			$s = "select * from doctor where DCT_TITLE <> '检查医师' and DCT_TITLE <> '护士' order by DEPT_NAME";
 			$rst = mysqli_query($lnk, $s);
-			echo "<table border='1'>";
+			echo "<table>";
 			echo "<tr>";
 			echo "<th>科室</th>";
 			echo "<th>医生编号</th>";
@@ -106,7 +106,7 @@
 				echo "<td>{$array['DCT_TEL']}</td>";
 				echo "<td>{$array['DCT_BIRTH']}</td>";
 				echo "<form action='reg_insert.php?name={$array['DCT_NO']}' method='post'>";
-				echo "<td><input type='submit' value='挂号'></td>";
+				echo "<td><input class='btn' type='submit' value='挂号'></td>";
 				echo "</form>";
 				echo "</tr>";
 			}
@@ -117,4 +117,13 @@
 		}
 	}
 
+	echo "<div class='middle'>";
+	echo "<form action='clerk.php?' method='post'>";
+	echo "<input class='btn' type='submit' value='返回'>";
+	echo "</form>";
+	echo "</div>";
+
+	echo "</center>";
+	echo "</body>";
+	echo "</html>";
 ?>
